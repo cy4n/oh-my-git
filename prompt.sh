@@ -1,5 +1,16 @@
 PSORG=$PS1;PROMPT_COMMAND_ORG=$PROMPT_COMMAND;
 
+__k8s_context()
+{
+    if [ -x "$(command -v kubectl)" ]; then
+        K8S_CONTEXT=$(kubectl config current-context)
+        if [ -n K8S_CONTEXT ]; then
+            echo $K8S_CONTEXT
+        fi
+    fi
+}
+
+
 if [ -n "${BASH_VERSION}" ]; then
     DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
     source ${DIR}/base.sh
@@ -209,11 +220,17 @@ if [ -n "${BASH_VERSION}" ]; then
                 prompt+=$(enrich_append true "${omg_is_on_a_tag_symbol} ${tag}" "${black_on_red}")
             done
             prompt+=$(enrich_append ${is_virtualenv} "${omg_is_virtualenv_symbol}  ${virtualenv}" "${white_on_red}")
-            prompt+="${reset}${red}${omg_arrow_symbol}${reset}\n"
+            prompt+="${reset}${red}${omg_arrow_symbol}${reset}"
+            if [ -x "$(command -v kubectl)" ] && [ -f ~/.kube/config ]; then
+                prompt+="${black}${background_blue}${omg_arrow_symbol}${white}${background_blue} ⎈: \$(__k8s_context) ${blue}${omg_arrow_symbol}${reset}\n"
+            fi
             prompt+="$(eval_prompt_callback_if_present)"
             prompt+="${omg_second_line}"
         else
             prompt+="$(eval_prompt_callback_if_present)"
+            if [ -x "$(command -v kubectl)" ] && [ -f ~/.kube/config ]; then
+                prompt+="${black}${background_blue}${omg_arrow_symbol}${white}${background_blue} ⎈: \$(__k8s_context) ${blue}${omg_arrow_symbol}${reset}\n"
+            fi
             prompt+="${omg_ungit_prompt}"
             if [[ $is_virtualenv != false ]]; then
                 prompt+="${virtualenv}${omg_is_virtualenv_symbol}  "
