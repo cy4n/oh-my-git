@@ -1,3 +1,9 @@
+this fork is deprecated and i won't be updating it any more. i'm running zsh now. 
+
+try https://github.com/compholio/oh-my-git for a more active fork of the (also inactive) upstream repo
+
+
+
 
 ![alt tag](https://raw.githubusercontent.com/arialdomartini/oh-my-git-gh-pages/master/images/samples/01-ordinary-prompt.jpg)
 ![alt tag](https://raw.githubusercontent.com/arialdomartini/oh-my-git-gh-pages/master/images/samples/02-bang.jpg)
